@@ -24,6 +24,10 @@
   *{box-sizing:border-box;}
   html{scroll-behavior:smooth;}
 
+  html, body{
+    max-width:100%;
+    overflow-x:hidden;
+  }
   body{
     margin:0;
     background:var(--paper);
@@ -40,7 +44,7 @@
   .wrap{
     max-width:920px;
     margin:0 auto;
-    padding:0 24px;
+    padding:0 clamp(16px, 5vw, 24px);
   }
 
   /* ── Header ─────────────────────────────────────── */
@@ -70,6 +74,9 @@
     padding:64px 0 56px;
     border-bottom:1px solid var(--line);
   }
+  @media (max-width:640px){
+    .hero{padding:40px 0 40px;}
+  }
   .hero h1{
     font-family:'Fraunces',serif;
     font-weight:600;
@@ -97,6 +104,10 @@
     flex-wrap:wrap;
     gap:14px;
     align-items:center;
+  }
+  @media (max-width:400px){
+    .cta-row{flex-direction:column;align-items:flex-start;gap:10px;}
+    .btn{width:100%;justify-content:center;}
   }
   .btn{
     display:inline-flex;
@@ -269,6 +280,9 @@
     flex-wrap:wrap;
     gap:24px;
   }
+  @media (max-width:520px){
+    .foot-grid{flex-direction:column;gap:28px;}
+  }
   .foot-col h4{
     font-family:'IBM Plex Mono',monospace;
     font-size:11px;
@@ -303,6 +317,14 @@
 
   @media (prefers-reduced-motion: reduce){
     .stamp{animation:none;}
+  }
+
+  /* Small phones (320–360px) */
+  @media (max-width:360px){
+    .stamp{width:104px;height:104px;}
+    .stamp-text{font-size:9.5px;}
+    .hero p.lede{font-size:1.02rem;}
+    .tab{padding:18px 16px 16px;}
   }
 </style>
 </head>
