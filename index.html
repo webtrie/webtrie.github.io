@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PDF Merger – Split & Convert · Varyqon Studio</title>
+<meta name="description" content="Merge, split, and convert PDFs entirely on your device. No uploads, no servers. By Varyqon Studio.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#EEF2ED;
+    --paper-dim:#E3E8E1;
+    --ink:#182333;
+    --ink-soft:#4A5568;
+    --stamp:#B4402F;
+    --stamp-dim:#B4402F33;
+    --line:#CBD2C7;
+    --teal:#2F6E64;
+    --radius:2px;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    font-size:16px;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  a{color:inherit;}
+  img{max-width:100%;display:block;}
+
+  .wrap{
+    max-width:920px;
+    margin:0 auto;
+    padding:0 24px;
+  }
+
+  /* ── Header ─────────────────────────────────────── */
+  header{
+    padding:28px 0 0;
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:13px;
+    font-weight:600;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+  }
+  .brand .dot{
+    width:8px;height:8px;border-radius:50%;
+    background:var(--stamp);
+    flex-shrink:0;
+  }
+
+  /* ── Hero ───────────────────────────────────────── */
+  .hero{
+    position:relative;
+    padding:64px 0 56px;
+    border-bottom:1px solid var(--line);
+  }
+  .hero h1{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-optical-sizing:auto;
+    font-size:clamp(2.4rem,6vw,4.1rem);
+    line-height:1.03;
+    letter-spacing:-.01em;
+    margin:0 0 22px;
+    max-width:11ch;
+  }
+  .hero h1 em{
+    font-style:italic;
+    font-weight:400;
+    color:var(--teal);
+  }
+  .hero p.lede{
+    font-size:1.15rem;
+    color:var(--ink-soft);
+    max-width:46ch;
+    margin:0 0 32px;
+  }
+
+  .cta-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:14px;
+    align-items:center;
+  }
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:13px 22px;
+    border-radius:var(--radius);
+    font-family:'IBM Plex Mono',monospace;
+    font-size:13px;
+    font-weight:600;
+    letter-spacing:.03em;
+    text-decoration:none;
+    text-transform:uppercase;
+    border:1px solid var(--ink);
+    cursor:not-allowed;
+    opacity:.55;
+  }
+  .btn-note{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    color:var(--ink-soft);
+    letter-spacing:.02em;
+  }
+
+  /* ── Stamp (signature element) ─────────────────── */
+  .stamp{
+    position:absolute;
+    top:52px;
+    right:24px;
+    width:132px;
+    height:132px;
+    border:2.5px solid var(--stamp);
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transform:rotate(-11deg);
+    color:var(--stamp);
+    mix-blend-mode:multiply;
+    animation:stampIn .5s cubic-bezier(.2,.9,.25,1) both;
+    animation-delay:.15s;
+  }
+  .stamp::before{
+    content:"";
+    position:absolute;
+    inset:9px;
+    border:1px solid var(--stamp);
+    border-radius:50%;
+  }
+  .stamp-text{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    font-weight:600;
+    text-align:center;
+    letter-spacing:.05em;
+    line-height:1.5;
+    text-transform:uppercase;
+  }
+  @keyframes stampIn{
+    from{transform:rotate(-11deg) scale(1.5);opacity:0;}
+    to{transform:rotate(-11deg) scale(1);opacity:1;}
+  }
+  @media (max-width:640px){
+    .stamp{position:static;margin:28px 0 0;transform:rotate(-6deg);}
+  }
+
+  /* ── Feature tabs ───────────────────────────────── */
+  .features{
+    padding:56px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--stamp);
+    margin:0 0 20px;
+  }
+  .tabs{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
+    gap:2px;
+    background:var(--line);
+    border:1px solid var(--line);
+  }
+  .tab{
+    background:var(--paper);
+    padding:22px 20px 20px;
+    position:relative;
+  }
+  .tab::before{
+    content:attr(data-ext);
+    position:absolute;
+    top:0;
+    left:20px;
+    transform:translateY(-50%);
+    background:var(--ink);
+    color:var(--paper);
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10px;
+    font-weight:600;
+    letter-spacing:.05em;
+    padding:3px 8px;
+  }
+  .tab h3{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:1.2rem;
+    margin:10px 0 8px;
+  }
+  .tab p{
+    margin:0;
+    font-size:.92rem;
+    color:var(--ink-soft);
+  }
+
+  /* ── Local-processing strip ─────────────────────── */
+  .strip{
+    padding:44px 0;
+    border-bottom:1px solid var(--line);
+    display:flex;
+    gap:28px;
+    flex-wrap:wrap;
+  }
+  .strip-item{
+    flex:1 1 220px;
+  }
+  .strip-item .num{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    color:var(--teal);
+    font-weight:600;
+  }
+  .strip-item p{
+    margin:6px 0 0;
+    color:var(--ink-soft);
+    font-size:.95rem;
+  }
+
+  /* ── Languages ──────────────────────────────────── */
+  .langs{
+    padding:44px 0 52px;
+    border-bottom:1px solid var(--line);
+  }
+  .lang-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:18px;
+  }
+  .lang-chip{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:.04em;
+    padding:7px 13px;
+    border:1px solid var(--ink);
+    color:var(--ink);
+  }
+
+  /* ── Footer ─────────────────────────────────────── */
+  footer{
+    padding:40px 0 60px;
+  }
+  .foot-grid{
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:24px;
+  }
+  .foot-col h4{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin:0 0 12px;
+  }
+  .foot-col a{
+    display:block;
+    text-decoration:none;
+    font-size:.95rem;
+    margin-bottom:8px;
+    border-bottom:1px solid transparent;
+  }
+  .foot-col a:hover, .foot-col a:focus-visible{
+    border-bottom-color:var(--ink);
+  }
+  a:focus-visible, .btn:focus-visible{
+    outline:2px solid var(--teal);
+    outline-offset:3px;
+  }
+  .copyright{
+    margin-top:36px;
+    padding-top:20px;
+    border-top:1px solid var(--line);
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11.5px;
+    color:var(--ink-soft);
+    letter-spacing:.02em;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .stamp{animation:none;}
+  }
+</style>
+</head>
+<body>
+
+<header class="wrap">
+  <div class="brand"><span class="dot"></span> Varyqon Studio</div>
+</header>
+
+<section class="hero wrap">
+  <div class="stamp" role="img" aria-label="100 percent local processing badge">
+    <span class="stamp-text">100%<br>Local<br>Processing</span>
+  </div>
+  <h1>Your PDFs, handled <em>on your own device.</em></h1>
+  <p class="lede">Merge, split, and convert PDF files without a single byte leaving your phone. No servers, no uploads, no accounts.</p>
+  <div class="cta-row">
+    <span class="btn" aria-disabled="true">Get it on Google Play</span>
+    <span class="btn-note">— coming soon, app is in review</span>
+  </div>
+</section>
+
+<section class="features wrap">
+  <p class="eyebrow">What it does</p>
+  <div class="tabs">
+    <div class="tab" data-ext="MERGE">
+      <h3>Merge PDF</h3>
+      <p>Combine several PDF files into a single document, in the order you choose.</p>
+    </div>
+    <div class="tab" data-ext="SPLIT">
+      <h3>Split &amp; Extract</h3>
+      <p>Pull specific pages out of any PDF into their own file — as single pages or grouped.</p>
+    </div>
+    <div class="tab" data-ext="→PNG">
+      <h3>PDF to Images</h3>
+      <p>Convert every page of a PDF into standalone image files.</p>
+    </div>
+    <div class="tab" data-ext="→PDF">
+      <h3>Images to PDF</h3>
+      <p>Turn a set of photos into one clean, ordered PDF document.</p>
+    </div>
+  </div>
+</section>
+
+<section class="strip wrap">
+  <div class="strip-item">
+    <div class="num">01 — No servers</div>
+    <p>Every merge, split, and conversion happens locally. Your files are never transmitted anywhere.</p>
+  </div>
+  <div class="strip-item">
+    <div class="num">02 — No accounts</div>
+    <p>Open the app and start working. Nothing to sign up for, nothing to remember.</p>
+  </div>
+  <div class="strip-item">
+    <div class="num">03 — Free, ad-supported</div>
+    <p>The app stays free to use. Ads are served by Google AdMob and never see your files.</p>
+  </div>
+</section>
+
+<section class="langs wrap">
+  <p class="eyebrow">Available in</p>
+  <div class="lang-row">
+    <span class="lang-chip">English</span>
+    <span class="lang-chip">Français</span>
+    <span class="lang-chip">العربية</span>
+    <span class="lang-chip">Español</span>
+  </div>
+</section>
+
+<footer class="wrap">
+  <div class="foot-grid">
+    <div class="foot-col">
+      <h4>Legal</h4>
+      <a href="/privacy-policy.html">Privacy Policy</a>
+      <a href="/terms.html">Terms of Service</a>
+    </div>
+    <div class="foot-col">
+      <h4>Contact</h4>
+      <a href="mailto:varyqonstudio@gmail.com">varyqonstudio@gmail.com</a>
+    </div>
+    <div class="foot-col">
+      <h4>Developer</h4>
+      <a href="https://github.com/webtrie">Varyqon Studio</a>
+    </div>
+  </div>
+  <div class="copyright">© 2026 Varyqon Studio. PDF Merger – Split &amp; Convert.</div>
+</footer>
+
+</body>
+</html>
